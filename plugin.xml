@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.itretail.motorola"
-        version="0.7.0">
+        version="0.1.0">
 
   <name>Motorola EMDK Plugin</name>
 
@@ -29,23 +29,9 @@
 	   <uses-library android:name="com.symbol.emdk" />
 	</config-file>
 	
-    <source-file src="src/android/Hello.java" target-dir="src/com/example/plugin/"/>
-  </platform>
-
-  <platform name="ios">
-    
-    <config-file target="config.xml" parent="/widget">
-      <feature name="Hello">
-        <param name="ios-package" value="HWPHello" />
-      </feature>
-    </config-file>
-
-    <header-file src="src/ios/HWPHello.h" target-dir="HelloPlugin"/>
-    <source-file src="src/ios/HWPHello.m" target-dir="HelloPlugin"/>
-  </platform>
-
-  <platform name="wp7">
-    <source-file src="src/wp7/Hello.cs"/>
+    <source-file src="src/android/com/itretail/motorola/BarcodeScan.java" target-dir="src/com/itretail/motorola/"/>
+	<source-file src="src/android/com/itretail/motorola/ScanCallback.java" target-dir="src/com/itretail/motorola/"/>
+	<source-file src="src/android/com/itretail/motorola/ScanService.java" target-dir="src/com/itretail/motorola/"/>
   </platform>
 
 </plugin>
