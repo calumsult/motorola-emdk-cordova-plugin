@@ -9,8 +9,6 @@
     <engine name="cordova" version=">=3.4.0"/>
   </engines>
 
-  <asset src="www/emdk.js" target="js/emdk.js"/>
-
   <js-module src="www/emdk.js" name="emdk">
     <clobbers target="emdk" />
   </js-module>

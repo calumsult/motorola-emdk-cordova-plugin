@@ -1,5 +1,3 @@
-cordova.define("com.itr.motorola", function(require, exports, module) { /*
-
 /*global cordova, module*/
 
 module.exports = {
@@ -13,5 +11,3 @@ module.exports = {
         cordova.exec(null, null, 'MotorolaScanner', 'trigger', []);
     }
 };
-
-});
