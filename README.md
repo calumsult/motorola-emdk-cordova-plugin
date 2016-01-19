@@ -1,2 +1,2 @@
 # motorola-emdk-cordova-plugin
-Cordova plugin to support Barcode scanning in the Motorola Android devices
+Cordova plugin supporting barcodes scanning with Motorola Android devices
