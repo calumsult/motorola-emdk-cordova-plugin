@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-        id="com.itretail.motorola"
+        id="com.itr.motorola"
         version="0.1.0">
 
   <name>Motorola EMDK Plugin</name>
@@ -19,7 +19,7 @@
 
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="MotorolaScanner">
-        <param name="android-package" value="com.itretail.motorola.ScanService"/>
+        <param name="android-package" value="com.itr.motorola.ScanService"/>
       </feature>
     </config-file>
 	<config-file target="AndroidManifest.xml" parent="/*">
@@ -29,9 +29,9 @@
 	   <uses-library android:name="com.symbol.emdk" />
 	</config-file>
 	
-    <source-file src="src/android/com/itretail/motorola/BarcodeScan.java" target-dir="src/com/itretail/motorola/"/>
-	<source-file src="src/android/com/itretail/motorola/ScanCallback.java" target-dir="src/com/itretail/motorola/"/>
-	<source-file src="src/android/com/itretail/motorola/ScanService.java" target-dir="src/com/itretail/motorola/"/>
+    <source-file src="src/android/com/itr/motorola/BarcodeScan.java" target-dir="src/com/itr/motorola/"/>
+	<source-file src="src/android/com/itr/motorola/ScanCallback.java" target-dir="src/com/itr/motorola/"/>
+	<source-file src="src/android/com/itr/motorola/ScanService.java" target-dir="src/com/itr/motorola/"/>
   </platform>
 
 </plugin>

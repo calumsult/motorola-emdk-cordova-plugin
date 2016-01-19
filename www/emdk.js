@@ -1,4 +1,4 @@
-cordova.define("com.itretail.motorola", function(require, exports, module) { /*
+cordova.define("com.itr.motorola", function(require, exports, module) { /*
 
 /*global cordova, module*/
 
