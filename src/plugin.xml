@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="com.itretail.motorola"
+        version="0.1.0">
+
+  <name>Motorola EMDK Plugin</name>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+
+  <asset src="www/emdk.js" target="js/emdk.js"/>
+
+  <js-module src="www/emdk.js" name="emdk">
+    <clobbers target="emdk" />
+  </js-module>
+
+  <platform name="android">
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="MotorolaScanner">
+        <param name="android-package" value="com.itretail.motorola.ScanService"/>
+      </feature>
+    </config-file>
+	<config-file target="AndroidManifest.xml" parent="/*">
+	   <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
+	</config-file>
+	<config-file target="AndroidManifest.xml" parent="/*/application">
+	   <uses-library android:name="com.symbol.emdk" />
+	</config-file>
+	
+    <source-file src="src/android/com/itretail/motorola/BarcodeScan.java" target-dir="src/com/itretail/motorola/"/>
+	<source-file src="src/android/com/itretail/motorola/ScanCallback.java" target-dir="src/com/itretail/motorola/"/>
+	<source-file src="src/android/com/itretail/motorola/ScanService.java" target-dir="src/com/itretail/motorola/"/>
+  </platform>
+
+</plugin>
