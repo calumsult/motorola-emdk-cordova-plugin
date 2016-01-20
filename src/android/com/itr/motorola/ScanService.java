@@ -64,10 +64,8 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
         }
         else if ("trigger".equals(action)){
-		
 			String barcode = data.getString(0);
-		
-            if (scanCallback != null){
+            if (scanCallback != null && barcode != null){
                 scanCallback.execute(new BarcodeScan("UPCA", barcode));
             }
         }
