@@ -1,5 +1,5 @@
 # Cordova Motorola EMDK Barcode Scanning Plugin
-This is a Cordova/Phonegap plugin to interact with Motorola/Zebra ruggedized devices' Barcode Scanners (eg, ET1, MC40, TC55). The plugin works via the Zebra EMDK Barcode API.
+This is a Cordova/Phonegap plugin to interact with Motorola/Zebra ruggedized devices' Barcode Scanners (eg, ET1, MC40, TC55). The plugin works via Zebra EMDK Barcode API.
 
 To install, run the following from your project command line: 
 $ cordova plugin add https://github.com/scor4er/motorola-emdk-cordova-plugin.git
