@@ -10,16 +10,12 @@ Usage:
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
-  ...
   if (emdk) {
       emdk.start();
       emdk.registerForBarcode(function (data) {
           var labelType = data.type,
               barcode = data.barcode;
-              
-          ...
       });
   }
-  ...
 }
 ```
