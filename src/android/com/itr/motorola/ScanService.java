@@ -2,37 +2,32 @@ package com.itr.motorola;
 
 import android.util.Log;
 
-//import com.symbol.emdk.barcode.ScanDataCollection;
+import com.symbol.emdk.barcode.ScanDataCollection;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-//import com.symbol.emdk.EMDKManager;
-//import com.symbol.emdk.EMDKManager.EMDKListener;
-//import com.symbol.emdk.EMDKResults;
-//import com.symbol.emdk.barcode.BarcodeManager;
-//import com.symbol.emdk.barcode.ScanDataCollection;
-//import com.symbol.emdk.barcode.Scanner;
-//import com.symbol.emdk.barcode.Scanner.DataListener;
-//import com.symbol.emdk.barcode.Scanner.StatusListener;
-//import com.symbol.emdk.barcode.ScannerException;
-//import com.symbol.emdk.barcode.ScannerResults;
-//import com.symbol.emdk.barcode.StatusData;
+import com.symbol.emdk.EMDKManager;
+import com.symbol.emdk.EMDKManager.EMDKListener;
+import com.symbol.emdk.EMDKResults;
+import com.symbol.emdk.barcode.BarcodeManager;
+import com.symbol.emdk.barcode.ScanDataCollection;
+import com.symbol.emdk.barcode.Scanner;
+import com.symbol.emdk.barcode.Scanner.DataListener;
+import com.symbol.emdk.barcode.Scanner.StatusListener;
+import com.symbol.emdk.barcode.ScannerException;
+import com.symbol.emdk.barcode.ScannerResults;
+import com.symbol.emdk.barcode.StatusData;
 
 import java.util.ArrayList;
 
-public class ScanService extends CordovaPlugin { //implements EMDKListener, StatusListener, DataListener {
+public class ScanService extends CordovaPlugin implements EMDKListener, StatusListener, DataListener {
 
-//    // Declare a variable to store EMDKManager object
-//    private EMDKManager emdkManager = null;
-//
-//    // Declare a variable to store Barcode Manager object
-//    private BarcodeManager barcodeManager = null;
-//
-//    // Declare a variable to hold scanner device to scan
-//    private Scanner scanner = null;
+    private EMDKManager emdkManager = null;
+    private BarcodeManager barcodeManager = null;
+    private Scanner scanner = null;
 
     protected static String TAG = "MotorolaBarcodeAPIPlugin";
 
@@ -62,144 +57,132 @@ public class ScanService extends CordovaPlugin { //implements EMDKListener, Stat
             };
         }
         else if ("start".equals(action)){
-
-//            // The EMDKManager object will be created and returned in the callback.
-//            EMDKResults results = EMDKManager.getEMDKManager(this.cordova.getActivity().getApplicationContext(), this);
-//            // Check the return status of getEMDKManager and update the status Text
-//            // View accordingly
-//            if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
-//                return false;
-//            }
+            EMDKResults results = EMDKManager.getEMDKManager(this.cordova.getActivity().getApplicationContext(), this);
+            if (results.statusCode != EMDKResults.STATUS_CODE.SUCCESS) {
+                return false;
+            }
 
         }
         else if ("trigger".equals(action)){
             if (scanCallback != null){
-                scanCallback.execute(new BarcodeScan("UPCA", "000000000001"));
+                scanCallback.execute(new BarcodeScan("UPCA", "000000000010"));
             }
         }
 
         return true;
     }
 
-//    @Override
-//    public void onData(ScanDataCollection scanDataCollection) {
-//        BarcodeScan barcode = getBarcode(scanDataCollection);
-//        if (barcode != null){
-//            scanCallback.execute(barcode);
-//        }
-//    }
-//
-//    @Override
-//    public void onOpened(EMDKManager emdkManager) {
-//        this.emdkManager = emdkManager;
-//        try {
-//            // Call this method to enable Scanner and its listeners
-//            initializeScanner();
-//        } catch (ScannerException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Override
-//    public void onClosed() {
-//        // The EMDK closed abruptly. // Clean up the objects created by EMDK
-//        // manager
-//        if (this.emdkManager != null) {
-//            this.emdkManager.release();
-//            this.emdkManager = null;
-//        }
-//    }
-//
-//    @Override
-//    public void onStatus(StatusData statusData) {
-//
-//    }
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        try {
-//            if (scanner != null) {
-//                // releases the scanner hardware resources for other application
-//                // to use. You must call this as soon as you're done with the
-//                // scanning.
-//                scanner.disable();
-//                scanner = null;
-//            }
-//        } catch (ScannerException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        if (emdkManager != null) {
-//
-//            // Clean up the objects created by EMDK manager
-//            emdkManager.release();
-//            emdkManager = null;
-//
-//
-//        }
-//    }
+    @Override
+    public void onData(ScanDataCollection scanDataCollection) {
+        BarcodeScan barcode = getBarcode(scanDataCollection);
+        if (barcode != null){
+            scanCallback.execute(barcode);
+        }
 
-//    protected BarcodeScan getBarcode(ScanDataCollection... params) {
-//        ScanDataCollection scanDataCollection = params[0];
-//
-//        // Status string that contains both barcode data and type of barcode
-//        // that is being scanned
-//        String statusStr = "";
-//
-//        // The ScanDataCollection object gives scanning result and the
-//        // collection of ScanData. So check the data and its status
-//        if (scanDataCollection != null && scanDataCollection.getResult() == ScannerResults.SUCCESS) {
-//
-//            ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection.getScanData();
-//
-//            // Iterate through scanned data and prepare the statusStr
-//            for (ScanDataCollection.ScanData data : scanData) {
-//                // Get the scanned data
-//                String barcodeData = data.getData();
-//                // Get the type of label being scanned
-//                ScanDataCollection.LabelType labelType = data.getLabelType();
-//                // Concatenate barcode data and label type
-//                return new BarcodeScan(barcodeData, labelType.toString());
-//            }
-//        }
-//        return null;
-//    }
-//
-//    // Method to initialize and enable Scanner and its listeners
-//    private void initializeScanner() throws ScannerException {
-//
-//        if (scanner == null) {
-//
-//            // Get the Barcode Manager object
-//            barcodeManager = (BarcodeManager) this.emdkManager
-//                    .getInstance(EMDKManager.FEATURE_TYPE.BARCODE);
-//
-//            // Get default scanner defined on the device
-//            scanner = barcodeManager.getDevice(BarcodeManager.DeviceIdentifier.DEFAULT);
-//
-//            // Add data and status listeners
-//            scanner.addDataListener(this);
-//            scanner.addStatusListener(this);
-//
-//            // Hard trigger. When this mode is set, the user has to manually
-//            // press the trigger on the device after issuing the read call.
-//            scanner.triggerType = Scanner.TriggerType.HARD;
-//
-//            // Enable the scanner
-//            scanner.enable();
-//
-//            // Starts an asynchronous Scan. The method will not turn ON the
-//            // scanner. It will, however, put the scanner in a state in which
-//            // the scanner can be turned ON either by pressing a hardware
-//            // trigger or can be turned ON automatically.
-//            scanner.read();
-//        }
-//
-//
-//    }
+
+        //scanner.read() works only for one scan
+        try {
+            scanner.read();
+        } catch (ScannerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onOpened(EMDKManager emdkManager) {
+        this.emdkManager = emdkManager;
+        try {
+            initializeScanner();
+        } catch (ScannerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClosed() {
+        if (this.emdkManager != null) {
+            this.emdkManager.release();
+            this.emdkManager = null;
+        }
+    }
+
+    @Override
+    public void onStatus(StatusData statusData) {
+
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            if (scanner != null) {
+                scanner.disable();
+                scanner = null;
+            }
+        } catch (ScannerException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (emdkManager != null) {
+            emdkManager.release();
+            emdkManager = null;
+
+
+        }
+    }
+
+    protected BarcodeScan getBarcode(ScanDataCollection... params) {
+
+
+        ScanDataCollection scanDataCollection = params[0];
+        String statusStr = "";
+
+        if (scanDataCollection != null && scanDataCollection.getResult() == ScannerResults.SUCCESS) {
+
+            ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection.getScanData();
+
+            for (ScanDataCollection.ScanData data : scanData) {
+                String barcodeData = data.getData();
+                ScanDataCollection.LabelType labelType = data.getLabelType();
+                return new BarcodeScan(labelType.toString(), barcodeData);
+            }
+        }
+        return null;
+    }
+
+    private void initializeScanner() throws ScannerException {
+
+        if (scanner == null) {
+
+            // Get the Barcode Manager object
+            barcodeManager = (BarcodeManager) this.emdkManager
+                    .getInstance(EMDKManager.FEATURE_TYPE.BARCODE);
+
+            // Get default scanner defined on the device
+            scanner = barcodeManager.getDevice(BarcodeManager.DeviceIdentifier.DEFAULT);
+
+            // Add data and status listeners
+            scanner.addDataListener(this);
+            scanner.addStatusListener(this);
+
+            // Hard trigger. When this mode is set, the user has to manually
+            // press the trigger on the device after issuing the read call.
+            scanner.triggerType = Scanner.TriggerType.HARD;
+
+            // Enable the scanner
+            scanner.enable();
+
+            // Starts an asynchronous Scan. The method will not turn ON the
+            // scanner. It will, however, put the scanner in a state in which
+            // the scanner can be turned ON either by pressing a hardware
+            // trigger or can be turned ON automatically.
+            scanner.read();
+        }
+
+
+    }
 }
