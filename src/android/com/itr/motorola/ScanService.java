@@ -1,5 +1,6 @@
 package com.itr.motorola;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.symbol.emdk.barcode.ScanDataCollection;
@@ -33,6 +34,10 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
     protected ScanCallback<BarcodeScan> scanCallback;
 
+    // Boolean to explain whether the scanning is in progress or not at any
+    // specific point of time
+    boolean isScanning = false;
+
     @Override
     public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
 
@@ -64,9 +69,8 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
         }
         else if ("trigger".equals(action)){
-			String barcode = data.getString(0);
-            if (scanCallback != null && barcode != null){
-                scanCallback.execute(new BarcodeScan("UPCA", barcode));
+            if (scanCallback != null){
+                scanCallback.execute(new BarcodeScan("UPCA", "000000000010"));
             }
         }
 
@@ -75,18 +79,72 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
     @Override
     public void onData(ScanDataCollection scanDataCollection) {
-        BarcodeScan barcode = getBarcode(scanDataCollection);
-        if (barcode != null){
-            scanCallback.execute(barcode);
+        new AsyncDataUpdate().execute(scanDataCollection);
+    }
+
+    private class AsyncDataUpdate extends
+            AsyncTask<ScanDataCollection, Void, BarcodeScan> {
+
+        @Override
+        protected BarcodeScan doInBackground(ScanDataCollection... params) {
+
+            // Status string that contains both barcode data and type of barcode
+            // that is being scanned
+            BarcodeScan statusStr = null;
+
+            try {
+
+                // Starts an asynchronous Scan. The method will not turn ON the
+                // scanner. It will, however, put the scanner in a state in
+                // which
+                // the scanner can be turned ON either by pressing a hardware
+                // trigger or can be turned ON automatically.
+                scanner.read();
+
+                ScanDataCollection scanDataCollection = params[0];
+
+                // The ScanDataCollection object gives scanning result and the
+                // collection of ScanData. So check the data and its status
+                if (scanDataCollection != null && scanDataCollection.getResult() == ScannerResults.SUCCESS) {
+
+                    ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection .getScanData();
+
+                    // Iterate through scanned data and prepare the statusStr
+                    for (ScanDataCollection.ScanData data : scanData) {
+                        // Get the scanned data
+                        String barcodeData = data.getData();
+                        // Get the type of label being scanned
+                        ScanDataCollection.LabelType labelType = data.getLabelType();
+                        // Concatenate barcode data and label type
+                        statusStr = new BarcodeScan(labelType.toString(), barcodeData);
+                    }
+                }
+
+            } catch (ScannerException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            // Return result to populate on UI thread
+            return statusStr;
+        }
+
+        @Override
+        protected void onPostExecute(BarcodeScan barcode) {
+            if (barcode != null){
+                scanCallback.execute(barcode);
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
         }
 
 
-        //scanner.read() works only for one scan
-        try {
-            scanner.read();
-        } catch (ScannerException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -109,8 +167,63 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
     @Override
     public void onStatus(StatusData statusData) {
+        new AsyncStatusUpdate().execute(statusData);
 
     }
+
+    // AsyncTask that configures the current state of scanner on background
+    // thread and updates the result on UI thread
+    private class AsyncStatusUpdate extends AsyncTask<StatusData, Void, String> {
+
+        @Override
+        protected String doInBackground(StatusData... params) {
+            // Get the current state of scanner in background
+            StatusData statusData = params[0];
+            String statusStr = "";
+            StatusData.ScannerStates state = statusData.getState();
+            // Different states of Scanner
+            switch (state) {
+                // Scanner is IDLE
+                case IDLE:
+                    statusStr = "IDLE";
+                    isScanning = false;
+                    break;
+                // Scanner is SCANNING
+                case SCANNING:
+                    statusStr = "SCANNING";
+                    isScanning = true;
+                    break;
+                // Scanner is waiting for trigger press
+                case WAITING:
+                    statusStr = "WAITING";
+                    break;
+                default:
+                    break;
+            }
+            // Return result to populate on UI thread
+            return statusStr;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result.equals("IDLE")){
+                try{
+                    scanner.read();
+                }
+                catch (Exception ignored){
+                }
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
     @Override
     public void onStop() {
         super.onStop();
