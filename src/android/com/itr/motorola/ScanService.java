@@ -90,7 +90,7 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
             // Status string that contains both barcode data and type of barcode
             // that is being scanned
-            BarcodeScan statusStr = null;
+            BarcodeScan barcode = null;
 
             try {
 
@@ -109,14 +109,14 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
                     ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection .getScanData();
 
-                    // Iterate through scanned data and prepare the statusStr
+                    // Iterate through scanned data and prepare the barcode
                     for (ScanDataCollection.ScanData data : scanData) {
                         // Get the scanned data
                         String barcodeData = data.getData();
                         // Get the type of label being scanned
                         ScanDataCollection.LabelType labelType = data.getLabelType();
                         // Concatenate barcode data and label type
-                        statusStr = new BarcodeScan(labelType.toString(), barcodeData);
+                        barcode = new BarcodeScan(labelType.toString(), barcodeData);
                     }
                 }
 
@@ -126,12 +126,12 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
             }
 
             // Return result to populate on UI thread
-            return statusStr;
+            return barcode;
         }
 
         @Override
         protected void onPostExecute(BarcodeScan barcode) {
-            if (barcode != null){
+            if (barcode != null && scanCallback != null){
                 scanCallback.execute(barcode);
             }
         }
@@ -247,25 +247,6 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
 
 
         }
-    }
-
-    protected BarcodeScan getBarcode(ScanDataCollection... params) {
-
-
-        ScanDataCollection scanDataCollection = params[0];
-        String statusStr = "";
-
-        if (scanDataCollection != null && scanDataCollection.getResult() == ScannerResults.SUCCESS) {
-
-            ArrayList<ScanDataCollection.ScanData> scanData = scanDataCollection.getScanData();
-
-            for (ScanDataCollection.ScanData data : scanData) {
-                String barcodeData = data.getData();
-                ScanDataCollection.LabelType labelType = data.getLabelType();
-                return new BarcodeScan(labelType.toString(), barcodeData);
-            }
-        }
-        return null;
     }
 
     private void initializeScanner() throws ScannerException {
