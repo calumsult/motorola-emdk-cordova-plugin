@@ -2,12 +2,12 @@
 
     module.exports = {
         start: function () {
-            cordova.exec(null, null, 'MotorolaScanner', 'start', []);
+            cordova.exec(null, null, 'ZebraScanner', 'start', []);
         },
         registerForBarcode: function (callback) {
-            cordova.exec(callback, null, 'MotorolaScanner', 'register', []);
+            cordova.exec(callback, null, 'ZebraScanner', 'register', []);
         },
         trigger: function (barcode) {
-            cordova.exec(null, null, 'MotorolaScanner', 'trigger', [barcode]);
+            cordova.exec(null, null, 'ZebraScanner', 'trigger', [barcode]);
         }
     };

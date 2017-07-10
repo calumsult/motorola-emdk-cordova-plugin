@@ -1,4 +1,4 @@
-package com.itr.motorola;
+package com.plugin.symbol.emdk;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -30,7 +30,7 @@ public class ScanService extends CordovaPlugin implements EMDKListener, StatusLi
     private BarcodeManager barcodeManager = null;
     private Scanner scanner = null;
 
-    protected static String TAG = "MotorolaBarcodeAPIPlugin";
+    protected static String TAG = "ZebraBarcodeAPIPlugin";
 
     protected ScanCallback<BarcodeScan> scanCallback;
 

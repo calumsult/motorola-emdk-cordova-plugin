@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-        id="com.itr.motorola"
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.plugin.symbol.emdk"
         version="0.1.0">
 
-  <name>Motorola EMDK Plugin</name>
+  <name>Zebra EMDK Plugin</name>
 
   <engines>
     <engine name="cordova" version=">=3.4.0"/>
@@ -16,20 +16,20 @@
   <platform name="android">
 
     <config-file target="res/xml/config.xml" parent="/*">
-      <feature name="MotorolaScanner">
-        <param name="android-package" value="com.itr.motorola.ScanService"/>
+      <feature name="ZebraScanner">
+        <param name="android-package" value="com.plugin.symbol.emdk.ScanService"/>
       </feature>
     </config-file>
-	<config-file target="AndroidManifest.xml" parent="/*">
-	   <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
-	</config-file>
-	<config-file target="AndroidManifest.xml" parent="/*/application">
-	   <uses-library android:name="com.symbol.emdk" />
-	</config-file>
+    <config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/*/application">
+      <uses-library android:name="com.symbol.emdk" />
+    </config-file>
 	
-    <source-file src="src/android/com/itr/motorola/BarcodeScan.java" target-dir="src/com/itr/motorola/"/>
-	<source-file src="src/android/com/itr/motorola/ScanCallback.java" target-dir="src/com/itr/motorola/"/>
-	<source-file src="src/android/com/itr/motorola/ScanService.java" target-dir="src/com/itr/motorola/"/>
+    <source-file src="src/android/com/plugin/symbol/emdk/BarcodeScan.java" target-dir="src/com/plugin/symbol/emdk/"/>
+    <source-file src="src/android/com/plugin/symbol/emdk/ScanCallback.java" target-dir="src/com/plugin/symbol/emdk/"/>
+    <source-file src="src/android/com/plugin/symbol/emdk/ScanService.java" target-dir="src/com/plugin/symbol/emdk/"/>
   </platform>
 
 </plugin>
