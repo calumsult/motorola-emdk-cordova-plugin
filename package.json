@@ -1,0 +1,31 @@
+{
+  "name": "zebra-emdk-cordova-plugin",
+  "version": "0.1.0",
+  "description": "Zebra EMDK Plugin",
+  "cordova": {
+    "id": "com.plugin.symbol.emdk",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calumsult/motorola-emdk-cordova-plugin.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=7.0.0"
+    }
+  ],
+  "author": "Calum Johnson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calumsult/motorola-emdk-cordova-plugin/issues"
+  },
+  "homepage": "https://github.com/calumsult/motorola-emdk-cordova-plugin#readme"
+}
