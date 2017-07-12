@@ -24,7 +24,7 @@
       <uses-permission android:name="com.symbol.emdk.permission.EMDK" />
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/*/application">
-      <uses-library android:name="com.symbol.emdk" />
+      <uses-library android:name="com.symbol.emdk" android:required="false"/>
     </config-file>
 	
     <source-file src="src/android/com/plugin/symbol/emdk/BarcodeScan.java" target-dir="src/com/plugin/symbol/emdk/"/>
